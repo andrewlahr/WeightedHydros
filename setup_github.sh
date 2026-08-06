@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-REPO_NAME="${1:-weighted-hydrographs-fpca}"
+REPO_NAME="${1:-WeightedHydros}"
 BRANCH="main"
 
 echo "=============================================================="

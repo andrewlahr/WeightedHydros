@@ -54,7 +54,7 @@ for (f in c("posterior_path", "flow_path", "params_path", "params_filter"))
     stop("config.R must define ", f, "().")
 
 # --- shorthands used everywhere ----------------------------------------------
-SITES     <- CFG$sites$active
+SITES     <- CFG$sites$all
 REC_LAG   <- CFG$biology$recruit_lag
 WINDOWS   <- CFG$windows                 # named list of c(start, end) on the WY axis
 WIN       <- names(WINDOWS)

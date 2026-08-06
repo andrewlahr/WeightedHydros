@@ -71,10 +71,10 @@ CFG <- list(
     # The old WorkingFPCA_robust.R pulled "NAdults" (adult NUMBERS) while its
     # comment said BAdults, so log(R/S) was built against one stock definition
     # and projected with another. Set to "NAdults" ONLY to reproduce that.
-    stock_node = "BAdults",
+    stock_node = "NAdults",
 
     # If BAdults was not monitored, rebuild it as B3 + B4.
-    stock_fallback = c("B3", "B4"),
+    stock_fallback = c("N3", "N4"),
 
     # Fallback only. Used when the params CSV for a site cannot be read, which
     # produces a loud warning rather than a silent substitution. Real years come
@@ -83,7 +83,7 @@ CFG <- list(
 
     # Thin to this many posterior draws. The design matrix does not change
     # across draws, so 2000 is ample; more just costs time.
-    max_draws = 2000
+    max_draws = 20000
   ),
 
   biology = list(
@@ -134,16 +134,16 @@ CFG <- list(
     # Neither looks at the response, so neither fixes the objection that a
     # low-variance flow mode could carry the signal. Run
     # R/diag_fpc_truncation.R to test that empirically for your data.
-    fpc_rule       = "both",
+    fpc_rule       = "cumulative",
     fpc_target_var = 90,         # cumulative %, used by "cumulative" and "both"
     fpc_min_var    = 5,          # individual %, used by "individual" and "both"
-    fpc_max        = 10,         # hard cap, whichever rule is in force
+    fpc_max        = 6,         # hard cap, whichever rule is in force
 
     survival_lags = c(0, 1)      # candidate lags for the survival arm
   ),
 
   sensitivity = list(
-    n_sim          = 1000,                 # simulated beta(t) curves
+    n_sim          = 10000,                 # simulated beta(t) curves
     delta_cfs      = 25,                   # the "add this much water" unit
     volumes_af     = c(200, 1000, 5000),   # leased volumes to schedule
     window_lengths = c(7, 14, 30, 60),     # release durations to consider
@@ -271,7 +271,7 @@ CFG$rulecurve <- list(
   # if set TRUE, report the FALSE run alongside it.
   clamp_z = FALSE,
 
-  n_draws = 100, stock_max = 5000, stock_n = 2001
+  n_draws = 5000, stock_max = 5000, stock_n = 2001
 )
 
 #' FishCast export for a site: covarLagIn1Real, Flows, Weight3/4, Survival, RecLag
