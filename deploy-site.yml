@@ -1,0 +1,58 @@
+# =============================================================================
+# Deploy the rendered site to GitHub Pages.
+#
+# This workflow does NOT run R and does NOT run the analysis. It cannot: the Rmds
+# read output/, which is git-ignored because it holds data-derived products.
+#
+# It exists for the case where you commit the rendered _site/ folder to main and
+# want Pages updated automatically. If you prefer the simpler route, use
+# publish_site.sh instead and delete this file.
+#
+# MUTUALLY EXCLUSIVE WITH publish_site.sh. GitHub Pages has ONE source setting:
+#   publish_site.sh  needs  Settings > Pages > Source = "Deploy from a branch", gh-pages
+#   this workflow    needs  Settings > Pages > Source = "GitHub Actions"
+# If Pages is set to the branch and this workflow is left in place, every run
+# fails at deploy-pages while the site keeps working -- a confusing combination.
+#
+# To use this instead: delete publish_site.sh, remove `_site/` from .gitignore,
+# commit the rendered folder, and set the Pages source to "GitHub Actions".
+# Otherwise DELETE THIS FILE.
+# =============================================================================
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+    paths: ['_site/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the site exists
+        run: |
+          test -f _site/index.html || {
+            echo "::error::_site/index.html not found."
+            echo "Run render_site.R locally and commit _site/, or use publish_site.sh."
+            exit 1; }
+      - run: touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
