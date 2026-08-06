@@ -59,11 +59,11 @@ CFG <- list(
     # all    = c("Madison.Norris", "Missouri.Craig",'Missouri.Cascade', "BigHole.Melrose",
     #            "Ruby.Vigilante", "Beaverhead.FishAndGame")
   ),
-
+  
   # ---- which JAGS nodes carry the response ---------------------------------
   posterior = list(
     recruit_node = "R",
-
+    
     # *** THE ONE THAT MATTERS ***
     # "BAdults" is ADULT BIOMASS in grams, which is what the IPM's own Ricker
     # uses:  lRm = la0 + log(BAdults) - b*BAdults
@@ -71,24 +71,24 @@ CFG <- list(
     # comment said BAdults, so log(R/S) was built against one stock definition
     # and projected with another. Set to "NAdults" ONLY to reproduce that.
     stock_node = "NAdults",
-
+    
     # If BAdults was not monitored, rebuild it as B3 + B4.
     stock_fallback = c("N3", "N4"),
-
+    
     # Fallback only. Used when the params CSV for a site cannot be read, which
     # produces a loud warning rather than a silent substitution. Real years come
     # from params_path() / params_filter() below.
     first_year = 1980,
-
+    
     # Thin to this many posterior draws. The design matrix does not change
     # across draws, so 2000 is ample; more just costs time.
     max_draws = 20000
   ),
-
+  
   biology = list(
     recruit_lag = 3     # years from spawning to being counted
   ),
-
+  
   # ---- seasonal windows, on CALENDAR day-of-year (1 = 1 Jan) ----------------
   # PRE-REGISTERED. Fix them now; do not tune them after seeing a result.
   #
@@ -107,7 +107,7 @@ CFG <- list(
     summer = c(182, 273),   # Jul 1  - Sep 30
     autumn = c(274, 365)    # Oct 1  - Dec 31
   ),
-
+  
   fitting = list(
     block_len      = 5,          # years held out per cross-validation fold
     n_permutations = NULL,       # NULL = every circular shift (exact)
@@ -115,14 +115,14 @@ CFG <- list(
     gate_perm_p    = 0.3,       # permutation p must be at or below this
     seed           = 20260729,
     k_beta         = 20,         # spline basis dimension for beta(t)
-
+    
     # How beta(t) is estimated: "penalized" (smoothness prior) or "fpc"
     # (beta(t) built from the leading modes of variation in the flow itself).
     # See R/fn_fit_beta.R and R/explain/explain_estimator_choice.R.
     estimator          = "fpc",
     compare_estimators = FALSE,   # fit and gate the other arm too. Cheap, and
-                                 # agreement across priors is the best evidence
-                                 # that a daily peak is real.
+    # agreement across priors is the best evidence
+    # that a daily peak is real.
     # How many FPCs to keep. Two rules, answering different questions:
     #   "cumulative"  keep going until they JOINTLY reach fpc_target_var%
     #                 -- "can I reconstruct the hydrographs well enough?"
@@ -137,10 +137,10 @@ CFG <- list(
     fpc_target_var = 90,         # cumulative %, used by "cumulative" and "both"
     fpc_min_var    = 1,          # individual %, used by "individual" and "both"
     fpc_max        = 6,         # hard cap, whichever rule is in force
-
+    
     survival_lags = c(0, 1)      # candidate lags for the survival arm
   ),
-
+  
   sensitivity = list(
     n_sim          = 10000,                 # simulated beta(t) curves
     delta_cfs      = 25,                   # the "add this much water" unit
@@ -148,7 +148,7 @@ CFG <- list(
     window_lengths = c(7, 14, 30, 60),     # release durations to consider
     cred_level     = 0.80                  # for the "best day" interval
   ),
-
+  
   # ---- the season when water can actually be released (script 06b) ----------
   # Month-day. On a calendar axis May-October is a CONTIGUOUS block (day 121-304),
   # so 06b needs no boundary-wrapping logic at all -- one of the several pieces
@@ -158,14 +158,14 @@ CFG <- list(
     end   = "10-31",
     label = "irrigation and allocation season"
   ),
-
+  
   production = list(
     block_days = 30,     # width of each perturbation block in the IPM sweep
     n_years    = 40,
     burn_in    = 15,
     n_draws    = 400
   ),
-
+  
   qc = list(
     min_years = 10      # skip a site with fewer usable recruit-years
   )
@@ -258,18 +258,18 @@ params_filter <- function(site, d) {
 # the calendar-axis migration.
 CFG$rulecurve <- list(
   summer_doy = c(start = 196, end = 273),   # 15 Jul - 30 Sep
-
+  
   # Estimator settings. See the notes in R/10_rulecurve.R before changing any.
   zscore_ref   = "observed",   # "observed" matches the IPM | "quantile" = FishCast as-is
   recruit_stat = "mean",       # "mean" = E[R] | "median" = exp(mu), FishCast
   axis_mode    = "NALL",       # "NALL" = 1:1 IS the replacement line
   ssb_mode     = "fishcast",   # set by the STEP 3 scale check, not by taste
-
+  
   # Clamping truncates scenario z at the training range, which compresses exactly
   # the dry-scenario signal the analysis is trying to measure. FALSE by default;
   # if set TRUE, report the FALSE run alongside it.
   clamp_z = FALSE,
-
+  
   n_draws = 5000, stock_max = 5000, stock_n = 2001
 )
 
