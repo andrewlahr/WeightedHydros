@@ -55,8 +55,7 @@ CFG <- list(
   # there is more than one site. No code changes needed.
   sites = list(
     active = c("BigHole.Melrose"),
-    all    = c("Madison.Norris", 'Missouri.Cascade', "BigHole.Melrose",
-               "Ruby.Vigilante", "Beaverhead.FishAndGame","Beaverhead.Hildreth")
+    all    = c("Madison.Norris", 'Missouri.Cascade','Missouri.Craig', "BigHole.Melrose", "Beaverhead.FishAndGame","Beaverhead.Hildreth")
     # all    = c("Madison.Norris", "Missouri.Craig",'Missouri.Cascade', "BigHole.Melrose",
     #            "Ruby.Vigilante", "Beaverhead.FishAndGame")
   ),
@@ -134,9 +133,9 @@ CFG <- list(
     # Neither looks at the response, so neither fixes the objection that a
     # low-variance flow mode could carry the signal. Run
     # R/diag_fpc_truncation.R to test that empirically for your data.
-    fpc_rule       = "cumulative",
+    fpc_rule       = "both",
     fpc_target_var = 90,         # cumulative %, used by "cumulative" and "both"
-    fpc_min_var    = 5,          # individual %, used by "individual" and "both"
+    fpc_min_var    = 1,          # individual %, used by "individual" and "both"
     fpc_max        = 6,         # hard cap, whichever rule is in force
 
     survival_lags = c(0, 1)      # candidate lags for the survival arm

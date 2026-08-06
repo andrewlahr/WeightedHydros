@@ -214,9 +214,10 @@ f3a <- ggplot(bt, aes(doy, beta)) +
                          "This is NOT the management curve; see Figure 6a."),
        x = NULL, y = expression(beta[R](t))) + theme_wh
 
+num_sites<-bt$site%>%unique()%>%length()
 f3b <- ggplot(bt, aes(doy, p_pos)) +
-  geom_hline(yintercept = c(.1, .5, .9), linetype = c(3, 2, 3),
-             colour = c(PAL[["mute"]], PAL[["mute"]], PAL[["mute"]])) +
+  geom_hline(yintercept = c(.1, .5, .9), linetype =rep(c(3, 2, 3),num_sites),
+             colour = rep(c(PAL[["mute"]], PAL[["mute"]], PAL[["mute"]]),num_sites)) +
   geom_line(colour = PAL[["blue"]], linewidth = .9) +
   facet_wrap(~ site) +
   scale_x_continuous(breaks = MON_B, labels = MON_L) +
