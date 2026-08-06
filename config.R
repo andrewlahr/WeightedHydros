@@ -83,7 +83,7 @@ CFG <- list(
 
     # Thin to this many posterior draws. The design matrix does not change
     # across draws, so 2000 is ample; more just costs time.
-    max_draws = 2000
+    max_draws = 20000
   ),
 
   biology = list(
@@ -143,7 +143,7 @@ CFG <- list(
   ),
 
   sensitivity = list(
-    n_sim          = 1000,                 # simulated beta(t) curves
+    n_sim          = 10000,                 # simulated beta(t) curves
     delta_cfs      = 25,                   # the "add this much water" unit
     volumes_af     = c(200, 1000, 5000),   # leased volumes to schedule
     window_lengths = c(7, 14, 30, 60),     # release durations to consider
@@ -271,7 +271,7 @@ CFG$rulecurve <- list(
   # if set TRUE, report the FALSE run alongside it.
   clamp_z = FALSE,
 
-  n_draws = 100, stock_max = 5000, stock_n = 2001
+  n_draws = 5000, stock_max = 5000, stock_n = 2001
 )
 
 #' FishCast export for a site: covarLagIn1Real, Flows, Weight3/4, Survival, RecLag
