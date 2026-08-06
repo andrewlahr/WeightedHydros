@@ -55,8 +55,7 @@ CFG <- list(
   # there is more than one site. No code changes needed.
   sites = list(
     active = c("BigHole.Melrose"),
-    all    = c("Madison.Norris", 'Missouri.Cascade', "BigHole.Melrose",
-               "Ruby.Vigilante", "Beaverhead.FishAndGame","Beaverhead.Hildreth")
+    all    = c("Madison.Norris", 'Missouri.Cascade', "BigHole.Melrose", "Beaverhead.FishAndGame","Beaverhead.Hildreth")
     # all    = c("Madison.Norris", "Missouri.Craig",'Missouri.Cascade', "BigHole.Melrose",
     #            "Ruby.Vigilante", "Beaverhead.FishAndGame")
   ),
